@@ -66,6 +66,7 @@ const firebaseConfig2 = {
             element.addEventListener("click", () =>  {
             displayMonth(index,dataArray)
             currentMonth = index;
+            document.getElementById("detail").scrollIntoView({ behavior: "smooth" });
             document.querySelector(".section").appendChild(button);
             
             })
