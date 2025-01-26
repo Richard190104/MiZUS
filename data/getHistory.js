@@ -137,8 +137,19 @@ function displayMonth(index,dataArray){
         day.innerHTML = key;
         var div =  document.createElement("div");
         div.appendChild(day);
-        var c = 0;
-        monthInfo[key].forEach(p => {
+        var validPeople = monthInfo[key].filter(person => person !== null);
+        validPeople.forEach(p => {
+          if (p != null){
+            
+          var c = Object.keys(monthInfo[key]).find(k => {
+              const entry = monthInfo[key][k]; 
+              return entry &&
+                     entry.name === p.name &&
+                     entry.start === p.start &&
+                     entry.end === p.end;
+            });
+          console.log(c, validPeople)
+        }
           try{
             if (p.name != undefined){
 
@@ -146,7 +157,7 @@ function displayMonth(index,dataArray){
               div.appendChild(person);
               
             }
-            c++; 
+          
           }catch(err){}
          
         })
