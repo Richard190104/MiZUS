@@ -110,7 +110,9 @@ function displayClass(person, key, c){
     x.classList.add("x");
     x.addEventListener("click",() => {
       console.log("ahoj")
+      if (confirm(`Naozaj chcete vymazať ${person.name}?`)) {
       removeSpecificEntry(currentMonth, +key, c);
+    }
     })
     console.log(person)
     var arr = ["name","start","end"];
@@ -138,7 +140,10 @@ function displayMonth(index,dataArray){
         var div =  document.createElement("div");
         div.appendChild(day);
         console.log(monthInfo[key])
-        monthInfo[key] = Array.isArray(monthInfo[key]) ? monthInfo[key] : [monthInfo[key]];
+        if (monthInfo[key] && !Array.isArray(monthInfo[key])) {
+          
+          monthInfo[key] = Object.values(monthInfo[key]);
+        }
         var validPeople = monthInfo[key].filter(person => person !== null);
         validPeople.forEach(p => {
           if (p != null){
