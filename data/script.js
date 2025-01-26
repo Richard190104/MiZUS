@@ -29,10 +29,11 @@ function addBaseScreen(){
 
     button1.addEventListener("click", () => {
         document.body.removeChild(beg);
-        var backButton =  makeButton("back");
-        document.body.appendChild(backButton)
+        var backButton =  makeButton("<");
+        backButton.style.width = "50px";
+        document.querySelector(".back").appendChild(backButton)
         backButton.addEventListener("click", () => {
-            document.body.removeChild(backButton);
+            document.querySelector(".back").removeChild(backButton);
             addBaseScreen();
         });
     });
