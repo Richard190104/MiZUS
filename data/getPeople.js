@@ -38,7 +38,9 @@ const firebaseConfig = {
     const dataArray = await LoadPersons();
     if (dataArray != null){
         dataArray.forEach(person => {
+          if (person.name != "None"){
             createBlock(person);
+          }
         }); 
     }
     addPerson();
