@@ -137,6 +137,8 @@ function displayMonth(index,dataArray){
         day.innerHTML = key;
         var div =  document.createElement("div");
         div.appendChild(day);
+        console.log(monthInfo[key])
+        monthInfo[key] = Array.isArray(monthInfo[key]) ? monthInfo[key] : [monthInfo[key]];
         var validPeople = monthInfo[key].filter(person => person !== null);
         validPeople.forEach(p => {
           if (p != null){
