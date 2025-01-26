@@ -58,14 +58,29 @@ const firebaseConfig2 = {
         const element = document.createElement("button");
         const container = document.querySelector(".history");
         element.classList.add("mainButtons");
-        container.appendChild(element);
-        element.innerHTML = months[index+1];
-        element.addEventListener("click", () =>  {
+        
+          container.appendChild(element);
+          element.innerHTML = months[index+1];
+
+          if (today.getMonth() >= index){
+            element.addEventListener("click", () =>  {
             displayMonth(index,dataArray)
             currentMonth = index;
             document.querySelector(".section").appendChild(button);
-        })
+            
+            })
+         }
+         if (today.getMonth() == index){
+          element.style.backgroundColor = "green";
+         }
+          
+          if (today.getMonth() < index){
+            element.style.backgroundColor = "gray ";
+            element.style.cursor = "not-allowed";
+            
+           }
       });
+      
   })();
 
 function displayClass(person){
@@ -94,7 +109,6 @@ function displayMonth(index,dataArray){
         var day = document.createElement("h5");
         day.innerHTML = key;
         var div =  document.createElement("div");
-
         div.appendChild(day);
         monthInfo[key].forEach(p => {
           if (p.name != undefined){
