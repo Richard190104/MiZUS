@@ -123,6 +123,7 @@ const firebaseConfig = {
         detail.innerHTML = "";
         form.classList.add("form")
         detail.appendChild(form)
+        document.getElementById("detail").scrollIntoView({ behavior: "smooth" });
     });  
 
   }
@@ -169,6 +170,7 @@ const firebaseConfig = {
     block.appendChild(p);
     circle.addEventListener("click", () => {
         LoadDetail(person);
+        document.getElementById("detail").scrollIntoView({ behavior: "smooth" });
     });
     
   }
