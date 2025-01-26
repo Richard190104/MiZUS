@@ -208,3 +208,10 @@
     border-radius: 10px;
     background-color: rgba(128, 128, 128, 0);
 }
+
+.x{
+    background-color: rgb(214, 106, 106);
+    border-radius: 12px;
+    padding: 5px;
+    cursor: pointer;
+}
