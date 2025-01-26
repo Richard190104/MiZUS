@@ -128,6 +128,31 @@ const firebaseConfig = {
 
   }
 
+  async function removePersonByName(nameToDelete) {
+    try {
+      const snapshot = await dbRef.once('value'); // Fetch all data
+      const data = snapshot.val();
+  
+      // Iterate over the database to find the node with the matching name
+      for (let key in data) {
+        if (data[key].name === nameToDelete) {
+          await dbRef.child(key).remove(); // Delete the matching node
+          console.log(`Person ${nameToDelete} removed successfully`);
+          document.querySelector(".detail").innerHTML = `Žiak ${nameToDelete} bol vymazaný`;
+          return; // Exit after deletion
+        }
+      }
+  
+      console.log(`No person found with name: ${nameToDelete}`);
+      document.querySelector(".detail").innerHTML = `Žiak ${nameToDelete} nebol nájdený`;
+    } catch (error) {
+      console.error("Error removing person:", error);
+    }
+  }
+  
+  
+  
+
   function LoadDetail(person){
     var circle = document.createElement("div");
     circle.classList.add("circle");
@@ -144,12 +169,22 @@ const firebaseConfig = {
     circle.style.width = "100px";
     circle.style.height = "100px";
     circle.style.margin = "0";
-
+    var x = document.createElement("h2");
+    x.innerHTML = "Vymazať";
+    x.classList.add("x");
+    x.addEventListener("click", () => {
+      if (confirm(`Naozaj chcete vymazať ${person.name}?`)) {
+        removePersonByName(person.name); // Pass the name to delete
+      }
+    });
+    
     detail.appendChild(circle);
     detail.appendChild(name)
     detail.appendChild(day)
     detail.appendChild(time)
     detail.appendChild(duration)
+    detail.appendChild(x);
+    
   }
 
 
@@ -162,6 +197,7 @@ const firebaseConfig = {
     p.style.backgroundColor = "rgba(160, 160, 160, 0)";
     circle.classList.add("circle");
     block.classList.add("block");
+    
     if (data != null){
         data.appendChild(block);
     }
