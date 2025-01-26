@@ -151,6 +151,22 @@
     justify-content: center;
     flex-direction: column;
     padding: 2px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.form input{
+    width: 60%;
+    font-size: large;
+}
+.form select{
+    font-size: large;
+    width: 60%;
+}
+
+.form label{
+    font-size: large;
+    
 }
 
 .classDeatil{
