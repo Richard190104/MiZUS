@@ -38,9 +38,14 @@ const firebaseConfig = {
     const dataArray = await LoadPersons();
     if (dataArray != null){
         dataArray.forEach(person => {
+        try{
           if (person.name != "None"){
             createBlock(person);
           }
+        }
+        catch(err){
+
+        }
         }); 
     }
     addPerson();
@@ -53,7 +58,8 @@ const firebaseConfig = {
       const snapshot = await dbRef.once('value');
       const currentData = snapshot.val() || [];
   
-      const nextIndex = Object.keys(currentData).length;
+      const indexes = Object.keys(currentData).map(Number); // Convert keys to numbers
+      const nextIndex = indexes.length > 0 ? Math.max(...indexes) + 1 : 0;
   
       await dbRef.child(nextIndex).set(newData);
   
