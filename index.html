@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Základná štruktúra HTML dokumentu">
+    <title>Hodiny ZUS</title>
+    <link rel="stylesheet" href="data/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="formClass"></div>
+    <div class="main">
+        <div class="history">
+            
+            
+        </div>
+        <div class="section">
+            <div class="monthDetail">
+                
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="data/getPeople.js"></script>
+    <script src="data/getHistory.js"></script>
+    <script src="data/export.js"></script>
+
+    <script src="data/script.js"></script>
+    <script>
+        flatpickr("#calendar", {
+        dateFormat: "Y-m-d",
+        minDate: "today", 
+        maxDate: "2025-12-31", 
+    });
+    </script>
+</body>
+</html>

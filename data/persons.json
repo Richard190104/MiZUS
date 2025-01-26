@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Matko Kubko",
+        "day": "Piatok",
+        "time": "15:55",
+        "duration": "60"
+    },
+    {
+        "name": "Peter Cmorik",
+        "day": "Utorok",
+        "time": "12:55",
+        "duration": "30"
+    }
+]
