@@ -68,6 +68,7 @@ const firebaseConfig2 = {
             currentMonth = index;
             document.getElementById("detail").scrollIntoView({ behavior: "smooth" });
             document.querySelector(".section").appendChild(button);
+
             
             })
          }
@@ -84,9 +85,33 @@ const firebaseConfig2 = {
       
   })();
 
-function displayClass(person){
+
+  async function removeSpecificEntry(month, day, entryIndex) {
+    console.log(month,day,entryIndex)
+    try {
+
+      const entryRef = dbRef2.child(`${month}/${day}/${entryIndex}`);
+
+      await entryRef.remove(); 
+  
+      console.log(`Entry ${entryIndex} for month ${month}, day ${day} removed successfully`);
+      
+    } catch (error) {
+      console.error("Error removing entry:", error);
+    }
+  }
+  
+
+function displayClass(person, key, c){
     var div = document.createElement("div");
     div.classList.add("classDeatil")
+    var x = document.createElement("h5");
+    x.innerHTML = "Vymazať";
+    x.classList.add("x");
+    x.addEventListener("click",() => {
+      console.log("ahoj")
+      removeSpecificEntry(currentMonth, +key, c);
+    })
     console.log(person)
     var arr = ["name","start","end"];
     for(var i = 0; i < 3; i++){
@@ -95,7 +120,7 @@ function displayClass(person){
         stat.innerHTML = arr[i] + ": " + person[arr[i]];
         div.appendChild(stat);
     }
-    
+    div.appendChild(x);
     return div;
 }
 
@@ -106,17 +131,24 @@ function displayMonth(index,dataArray){
     m.innerHTML = months[index+1];
     document.querySelector(".monthDetail").appendChild(m);
     for(key in monthInfo){
+      
       if (monthInfo[key] != null){
         var day = document.createElement("h5");
         day.innerHTML = key;
         var div =  document.createElement("div");
         div.appendChild(day);
+        var c = 0;
         monthInfo[key].forEach(p => {
-          if (p.name != undefined){
-            var person = displayClass(p)
-            div.appendChild(person);
-          }
-            
+          try{
+            if (p.name != undefined){
+
+              var person = displayClass(p,key, c);
+              div.appendChild(person);
+              
+            }
+            c++; 
+          }catch(err){}
+         
         })
         div.style.width = "90%";
         document.querySelector(".monthDetail").appendChild(div);
@@ -140,9 +172,18 @@ async function addDataByMonthAndDay(month, day, newData) {
     const dayRef = dbRef2.child(month).child(day);
 
     const snapshot = await dayRef.once('value');
-    const currentData = snapshot.val() || [];
+    const currentData = snapshot.val() || {};
 
-    const nextIndex = Object.keys(currentData).length; 
+    // Get all numeric indexes
+    const indexes = Object.keys(currentData).map(Number);
+
+    // Find the first available index
+    let nextIndex = 0;
+    while (indexes.includes(nextIndex)) {
+      nextIndex++;
+    }
+
+    // Add data to the first available index
     await dayRef.child(nextIndex).set(newData);
 
     console.log(`Data added to month ${month}, day ${day} at index ${nextIndex}:`, newData);
@@ -150,6 +191,7 @@ async function addDataByMonthAndDay(month, day, newData) {
     console.error('Error adding data:', error);
   }
 }
+
 
 
 async function createForm(month) {
@@ -162,7 +204,8 @@ async function createForm(month) {
     { label: 'Koniec', type: 'time', name: 'end' }
   ];
 
-  const people = await LoadPersons();
+  var validPeople = await LoadPersons();
+  var people = validPeople.filter(person => person !== null);
   const names = people.map(person => person.name); 
 
   const nameLabel = document.createElement('label');
@@ -215,7 +258,7 @@ async function createForm(month) {
 
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
-  submitButton.textContent = 'Submit';
+  submitButton.textContent = 'Pridať';
   submitButton.classList.add('mainButtons');
   form.appendChild(submitButton);
 
