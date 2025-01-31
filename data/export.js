@@ -23,7 +23,7 @@ function calculateDuration(start, end) {
 
 function getDayFromDate(dateString) {
    const date = new Date(dateString); 
-   const days = ["Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota", "Nedeľa"];
+   const days = ["Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"];
    return days[date.getDay()]; 
 }
 
@@ -42,11 +42,11 @@ function getBorders(){
 }
 
 function prepareData(mh){
-   let week1 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie"] ]
-   let week2 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie"] ]
-   let week3 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie"] ]
-   let week4 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie"] ]
-   let week5 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie"] ]
+   let week1 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
+   let week2 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
+   let week3 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
+   let week4 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
+   let week5 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
    let weeks = [week1,week2,week3,week4,week5];
    let breaks = getBorders();
    
@@ -60,7 +60,16 @@ function prepareData(mh){
          let lessons = mh[i]
          lessons.forEach((lesson) => {
             if(lesson.name != undefined){
-               weeks[currentWeek].push(["",getDayFromDate("2025-" + (currentMonth+1) + "-" + i), i + "/" + (currentMonth+1) + "/2025",lesson.name,lesson.start,calculateDuration(lesson.start,lesson.end)])
+               var c = "";
+               try{
+                  if (lesson.r == "on"){
+                     c = "náhradná hodina"
+                  }
+                  else{
+                     c = "";
+                  }
+               }catch(e){}
+               weeks[currentWeek].push(["",getDayFromDate("2025-" + (currentMonth+1) + "-" + i), i + "/" + (currentMonth+1) + "/2025",lesson.name,lesson.start,calculateDuration(lesson.start,lesson.end), c])
             }
           
          })
@@ -93,7 +102,7 @@ function prepareData(mh){
 
 async function exportToExcel(datas) {
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Rozvrh");
+    const worksheet = workbook.addWorksheet("Výpis");
     
 
     pointer = 0;
@@ -123,17 +132,20 @@ async function exportToExcel(datas) {
 
 
     worksheet.eachRow((row, rowNumber) => {
-        row.eachCell((cell) => {
-            cell.border = {
-                top: { style: "thin" },
-                left: { style: "thick" },
-                bottom: { style: "thin" },
-                right: { style: "thick" },
-            };
-        });
+  
+      row.eachCell((cell, colNumber) => {
 
+              cell.border = {
+                  top: { style: "thin" },
+                  left: { style: "thin" },
+                  bottom: { style: "thin" },
+                  right: { style: "thin" },
+              };
+          
+      });
+  });
 
-    });
+   
 
     worksheet.mergeCells(`A${pointer+2}:A${data.length+pointer}`); 
   
@@ -164,6 +176,7 @@ async function exportToExcel(datas) {
         { width: 20 },
         { width: 12 },
         { width: 14 },
+        { width: 20 },
     ];
 
 
