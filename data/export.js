@@ -52,7 +52,6 @@ function prepareData(mh){
    
    var currentWeek = 0;
    for (var i = 1; i < 32; i++){
-      console.log(i, breaks)
       if (breaks.includes(i)){
          currentWeek = breaks.indexOf(i) + 1;
       }
@@ -83,7 +82,6 @@ function prepareData(mh){
          
       }
    });
-   console.log(weeks);
    return weeks;
 
 }
@@ -101,24 +99,40 @@ function prepareData(mh){
 
 
 async function exportToExcel(datas) {
+   var lastDay = "";
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Výpis");
-    
+
 
     pointer = 0;
 
    for (var i = 0; i < datas.length; i++){
       let data = datas[i]; 
-      data.forEach((row) => worksheet.addRow(row));
-
+      let lastDay = ""; 
+      
+      data.forEach((row) => {
+          let newRow = worksheet.addRow(row); 
+          let rowIndex = newRow.number; 
+          
+          let cellValue = worksheet.getRow(rowIndex).getCell(2).value; 
+          
+          if (cellValue && cellValue !== "Deň") {
+              if (cellValue === lastDay) {
+                  worksheet.getRow(rowIndex).getCell(2).value = ""; 
+              } else {
+                  lastDay = cellValue; 
+              }
+          }
+      });
+      
     var headerRow = worksheet.getRow(pointer+1);
 
     headerRow.eachCell((cell) => {
-        cell.font = { bold: true, color: { argb: "FF000000" } }; // Black text
+        cell.font = { bold: true, color: { argb: "FF000000" } }; 
         cell.fill = {
             type: "pattern",
             pattern: "solid",
-            fgColor: { argb: "FFD9D9D9" }, // Light gray background
+            fgColor: { argb: "FFD9D9D9" }, 
         };
        
         cell.alignment = { horizontal: "center", vertical: "middle" };
