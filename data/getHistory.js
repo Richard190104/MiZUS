@@ -219,7 +219,8 @@ async function createForm(month) {
   const fields = [
     { label: 'Deň', type: 'number', name: 'day' },
     { label: 'Začiatok', type: 'time', name: 'start' },
-    { label: 'Koniec', type: 'time', name: 'end' }
+    { label: 'Koniec', type: 'time', name: 'end' },
+    { label: 'Náhradná hodina', type: 'checkbox', name: 'replace' }
   ];
 
   var validPeople = await LoadPersons();
@@ -274,6 +275,16 @@ async function createForm(month) {
     }
   });
 
+  inputFields["start"].addEventListener(('change'), () => {
+    const selectedIndex = nameDropdown.value;
+    const selectedPerson = people[selectedIndex]; 
+    console.log(selectedPerson)
+    if (selectedPerson) {
+      console.log(inputFields['end'].value, addDurationToTime(selectedPerson.time, selectedPerson.duration) || '' )
+      inputFields['end'].value = addDurationToTime(inputFields['start'].value, selectedPerson.duration) || ''; 
+    }
+  })
+
   const submitButton = document.createElement('button');
   submitButton.type = 'submit';
   submitButton.textContent = 'Pridať';
@@ -286,7 +297,8 @@ async function createForm(month) {
     addDataByMonthAndDay(month, formData.get('day'), {
       name: people[nameDropdown.value].name,
       start: formData.get('start'),
-      end: formData.get('end')
+      end: formData.get('end'),
+      r: formData.get('replace')
     });
     document.querySelector(".formClass").innerHTML = "";
     document.querySelector(".formClass").style.display = "none";
