@@ -47,7 +47,8 @@ function prepareData(mh){
    let week3 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
    let week4 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
    let week5 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
-   let weeks = [week1,week2,week3,week4,week5];
+   let week6 = [ ["", "Deň", "Dátum", "Meno študenta", "Čas", "Trvanie lekcie", ""] ]
+   let weeks = [week1,week2,week3,week4,week5,week6];
    let breaks = getBorders();
    
    var currentWeek = 0;
